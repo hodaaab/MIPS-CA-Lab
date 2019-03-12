@@ -1,7 +1,6 @@
 module Data_Memory
 	(
 		input clk,
-		input rst,
 		input [31:0] Address,
 		input [31:0] Write_data,
 		input MEM_R_EN,

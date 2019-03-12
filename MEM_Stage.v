@@ -12,4 +12,9 @@ module MEM_Stage
 		output [31:0] MEM_read_value
 	);
 	
+	Data_Memory data_memory(.clk (clk), .Address (ALU_result_in), 
+		.Write_data (ST_val), .MEM_R_EN (MEM_R_EN_in), .MEM_W_EN (MEM_W_EN_in),
+		.Data (MEM_read_value));
+	//missing Write_Back Module
+
 endmodule
