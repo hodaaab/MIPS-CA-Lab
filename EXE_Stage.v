@@ -12,6 +12,10 @@ module EXE_Stage
 		output [31:0] Br_Addr,
 		output Br_taken
 	);
-  ALU alu1(val1, val2, EXE_CMD, aluout );
+	always @(PC or Val2) begin
+		Br_Addr <= PC + 32'd4 + Val2[15:0]; //PC + offset + 4
+	end
+	Condition_Check conition_check(.Br_type (Br_type), .Val1 (val1), .Src2_Val (val_src2), .Branch_Taken (Br_taken));
+	ALU alu(.in1 (val1), .in2 (val2), .cmd (EXE_CMD), .result (ALU_result));
 
 endmodule

@@ -43,5 +43,6 @@ module ID_Stage_reg
 		Dest <= Dest_in;
 		Val1 <= Val1_in;
 		Val2 <= Val2_in;
+		Reg2 <= Reg2_in;
 	end
 endmodule
