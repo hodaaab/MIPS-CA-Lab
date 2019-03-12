@@ -22,7 +22,7 @@ always @(in1, in2, cmd)begin
   endcase 
    
   if (cmd == 4'b1001) begin 
-    var = {32{A[31]}};    
+    var = {32{in1[31]}};    
     x = in1 >> in2;   
     g = var << 31 - in2;
     Y = {g , x};      

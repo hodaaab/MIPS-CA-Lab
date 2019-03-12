@@ -320,14 +320,13 @@ assign HEX4 = dispwb;
 
 assign LEDR[3:0] = instruction[24:21];
 
-IF_Stage ifs(clk, rst, PC,  instruction);
-IF_Stage_reg ifsr(clk, rst, PC, instruction,	PCf, instruction_out);
-ID_Stage decode_stage(clk, rst, PCf, WB_Data,WB_Dest,WB_Write_Enable,PCd0,Val1, Val2, Reg2, Dest, Branch_Type0, Br_Taken, EXE_CMD0, MEM_R_EN0, MEM_W_EN0, WB_EN0);
-//ID_Stage_reg idsr(clk, rst, PCd0,  PCd);
-ID_Stage_reg idsr( clk, rst,   PCd0,   EXE_CMD0 , MEM_R_EN0 , MEM_W_EN0, WB_EN0 ,Branch_Type0 ,  PCd,   EXE_CMD, MEM_R_EN, MEM_W_EN, WB_EN,  Branch_Type);
+IF_Stage if_stage(.clk(clk), .rst(rst), .PC(PC), .Instruction(instruction));
+IF_Stage_reg if_stage_reg(.clk(clk), .rst(rst), .PC_in(PC), .Instruction_in(instruction),
+	.PC(PCf), .Instruction(instruction_out));
 
+ID_Stage decode_stage(clk, rst, PCf, WB_Data,WB_Dest,WB_Write_Enable,PCd0,Val1, Val2, Reg2, Dest, Branch_Type0, Br_Taken, EXE_CMD0, MEM_R_EN0, MEM_W_EN0, WB_EN0);
+ID_Stage_reg idsr( clk, rst,   PCd0,   EXE_CMD0 , MEM_R_EN0 , MEM_W_EN0, WB_EN0 ,Branch_Type0 ,  PCd,   EXE_CMD, MEM_R_EN, MEM_W_EN, WB_EN,  Branch_Type);
 EXE_Stage exes(clk, rst,   PCd,  PCe0);
- 
 EXE_Stage_reg exesr(clk, rst,   PCe0,  PCe);
 MEM_Stage mems(clk, rst,   PCe,  PCm0);
 MEM_Stage_reg memsr(clk, rst, PCm0, PCm);

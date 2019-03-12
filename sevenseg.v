@@ -1,5 +1,8 @@
-module sevenseg(input [3:0]num, output reg [6:0]disp);
-	//reg disp;
+module sevenseg
+	(
+		input [3:0]num, 
+		output reg [6:0]disp
+	);
 	always@(num)
 	begin
 		case(num)
@@ -21,5 +24,4 @@ module sevenseg(input [3:0]num, output reg [6:0]disp);
 			4'b1111 : disp <= 7'b0001110;
 		endcase
 	end
-	//assign notdisp = ~disp;
 endmodule

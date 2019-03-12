@@ -4,9 +4,9 @@ module Instruction_Memory
 		output reg [31:0] Instruction
 	);
 	//logic [31:0] instruction [6:0];
-	always@(adr) 
+	always@(Address) 
 	begin
-		case(adr)
+		case(Address)
 			32'd0 : Instruction <= 32'b000000_00111_00010_00000_00000000000;
 			32'd4 : Instruction <= 32'b000000_00011_00100_00000_00000000000;
 			32'd8 : Instruction <= 32'b000000_00101_00110_00000_00000000000;

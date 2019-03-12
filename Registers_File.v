@@ -16,7 +16,7 @@ module Registers_File
     initial begin
       $readmemb("Regfile.txt", Reg);
     end
-    always @(posedge clk,posedge rst) begin
+    always @(negedge clk or posedge rst) begin
         if (rst) begin
             for (i = 0; i < 32; i = i + 1)
                 Reg[i] <= 32'b0;

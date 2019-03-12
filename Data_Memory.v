@@ -8,19 +8,19 @@ module Data_Memory
 		output [31:0] Data
 	);
 
-	logic [7:0] memory [256:0]; 
+	reg [31:0] memory [255:0]; 
 	initial
 	begin
-  		memory[8'd100]=8'd255;
-  		memory[8'd101]=8'd0;
-  		memory[8'd102]=8'd1;
-  		memory[8'd103]=8'd0;
+  		memory[32'd100] = 32'd255;
+  		memory[32'd101] = 32'd0;
+  		memory[32'd102] = 32'd1;
+  		memory[32'd103] = 32'd0;
 	end
 	always @(posedge clk)
 	begin
   		if(MEM_W_EN)
   			memory[Address] <= Write_data;
 	end
-	assign Data = (MEM_R_EN)? memory[Address] : 8'b0;
+	assign Data = (MEM_R_EN)? memory[Address] : 32'b0;
 
 endmodule

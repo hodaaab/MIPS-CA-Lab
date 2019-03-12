@@ -28,11 +28,11 @@ module ID_Stage_reg
 		output reg WB_EN
 	);
 
-	always@(posedge clk, posedge rst)
+	always@(posedge clk or posedge rst)
 	begin
 		if(rst)
 		begin
-			PC <= 32'b0;
+			//reset what
 		end
 		EXE_CMD <= EXE_CMD_in;
 		MEM_R_EN <= MEM_R_EN_in;
