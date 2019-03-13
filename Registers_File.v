@@ -13,9 +13,9 @@ module Registers_File
 
     reg [31:0] Reg [0:31];
     integer i;
-    initial begin
-      $readmemb("Regfile.txt", Reg);
-    end
+ //   initial begin
+   //   $readmemb("Regfile.txt", Reg);
+   // end 
     always @(negedge clk or posedge rst) begin
         if (rst) begin
             for (i = 0; i < 32; i = i + 1)
@@ -24,7 +24,7 @@ module Registers_File
         else if (Write_EN) begin
             Reg[dest] <= Write_Val;
         end
-         Reg[0] <= 32'b0;
+        Reg[0] <= 32'b0;
     end
     assign reg1 = Reg[src1];
     assign reg2 = Reg[src2];

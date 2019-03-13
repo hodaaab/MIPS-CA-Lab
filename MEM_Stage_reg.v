@@ -25,12 +25,18 @@ module MEM_Stage_reg
 	begin
 		if(rst)
 		begin
-			//reset all outputs i think
+			WB_en <= 0;
+			MEM_R_EN <= 0;
+			ALU_result <= 0;
+			Mem_read_value <= 0;
+			Dest <= 0;
 		end
-		WB_en <= WB_en_in;
-		MEM_R_EN <= MEM_R_EN_in;
-		ALU_result <= ALU_result_in;
-		Mem_read_value <= Mem_read_value_in;
-		Dest <= Dest_in;
+		else begin
+			WB_en <= WB_en_in;
+			MEM_R_EN <= MEM_R_EN_in;
+			ALU_result <= ALU_result_in;
+			Mem_read_value <= Mem_read_value_in;
+			Dest <= Dest_in;
+		end
 	end
 endmodule

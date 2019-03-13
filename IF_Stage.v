@@ -8,7 +8,7 @@ module IF_Stage
 		output [31:0] Instruction
 	);
 	
-	reg [31:0] PC_in;
+wire [31:0] PC_in;
 	always @(posedge clk or posedge rst)
 	begin
 		if(rst)

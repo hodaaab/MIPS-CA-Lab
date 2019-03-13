@@ -13,7 +13,7 @@ module MEM_Stage
 	);
 	
 	wire [31:0] Address;
-	Address_Mapping addres_mapping( .ALU_result(ALU_result_in),
+	Address_Mapping address_mapping( .ALU_result(ALU_result_in),
 		.Data_memory_address(Address));
 	Data_Memory data_memory(.clk (clk), .Address (Address), 
 		.Write_data (ST_val), .MEM_R_EN (MEM_R_EN_in), .MEM_W_EN (MEM_W_EN_in),

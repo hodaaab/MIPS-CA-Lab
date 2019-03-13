@@ -9,7 +9,7 @@ module ID_Stage
 		input [4:0] WB_Dest,
 		input WB_Write_Enable,
 		//to IF stage registers
-		output IF_Flush,
+		//output IF_Flush,
 		//to stage registers
 		output [31:0]Val1, Val2, Reg2, 
 		output [4:0] Dest, 
