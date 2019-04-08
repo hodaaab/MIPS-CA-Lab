@@ -17,7 +17,11 @@ module WB_Stage
 	
 	assign WB_en = WB_en_in;
 	assign Dest = Dest_in;
-	MUX2TO1 wb_mux(.a (Mem_read_value), .b (ALU_result), .sel (MEM_R_EN),
-		.res (Write_value));
+	MUX2TO1 wb_mux (
+		.a 				(Mem_read_value),
+		.b 				(ALU_result),
+		.sel 			(MEM_R_EN),
+		.res 			(Write_value)
+	);
 
 endmodule
