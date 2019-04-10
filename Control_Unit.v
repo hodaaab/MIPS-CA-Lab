@@ -120,7 +120,7 @@ module Control_Unit
 			begin
 			mem_read = 1'b0;
 			mem_write = 1'b0;
-			wb_enable = 1'b0;
+			wb_enable = 1'b1;
 			is_immediate = 1'b1;
 			branch = 2'b0;
 			alu_command = 4'b0;
@@ -129,7 +129,7 @@ module Control_Unit
 			begin
 			mem_read = 1'b0;
 			mem_write = 1'b0;
-			wb_enable = 1'b0;
+			wb_enable = 1'b1;
 			is_immediate = 1'b1;
 			branch = 2'b0;
 			alu_command = 4'b0010;

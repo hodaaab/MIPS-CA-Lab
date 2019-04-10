@@ -302,27 +302,28 @@ input          TD_CLK27;            //	TV Decoder 27MHz CLK
 inout	[35:0]	GPIO_0;					//	GPIO Connection 0
 inout	[35:0]	GPIO_1;					//	GPIO Connection 1
 
-
-
-wire [31:0] PC, BrAddress ,instruction , PCf, instruction_out, Result_WB_Value, val1_ID, val2_ID, Reg2_ID, Reg2, val1, val2, PC_ID_OUT;
-wire [31:0] ALU_res_MEM, ALU_result_toReg, BrAddress_EXE, ST_Val, Data, ALU_Result_WBin, memreadval;
-wire MEM_W_EN_EXE, MEM_R_EN_EXE, WB_EN_EXE, WB_EN_MEM, MEM_R_EN_MEM, MEM_W_EN_MEM, MEM_R_EN_WB;
-wire clk, rst, Br_Taken, Br_taken_IF, WB_EN, Br_taken, MEM_R_EN_ID, MEM_W_EN_ID, WB_EN_ID;
-wire [4:0] Dest_WB, Dest_ID, Dest_MEM, Dest_out, WBdestAddress;
-wire [1:0] Br_type_ID, Br_type;
-wire [3:0 ] EXE_CMD_Sig, EXECMD;
-
-assign clk = KEY[1];
-assign rst = SW[0];
 /*
 assign HEX0 = dispfetch;
 assign HEX1 = dispdec;
 assign HEX2 = dispex;
 assign HEX3 = dispmem;
-assign HEX4 = dispwb;;
+assign HEX4 = dispwb;
+assign LEDR[3:0] = instruction[24:21];
 */
 
-assign LEDR[3:0] = instruction[24:21];
+
+wire [31:0] PC, BrAddress, instruction, PCf, instruction_out, Result_WB_Value, val1_ID, val2_ID, Reg2_ID, Reg2, val1, val2, PC_ID_OUT;
+wire [31:0] ALU_res_MEM, ALU_result_toReg, BrAddress_EXE, ST_Val, Data, ALU_Result_WBin, memreadval;
+ 
+wire MEM_W_EN_EXE, MEM_R_EN_EXE, WB_EN_EXE, WB_EN_MEM, MEM_R_EN_MEM, MEM_W_EN_MEM, MEM_R_EN_WB;
+wire Br_Taken  ,Br_taken_IF, WB_EN, WB_en_output, WB_EN_input, Br_taken, MEM_R_EN_ID, MEM_W_EN_ID, WB_EN_ID;
+wire [4:0] Dest_WB, Dest_ID, Dest_MEM, Dest_out, WBdestAddress;
+wire [1:0] Br_type_ID, Br_type;
+wire [3:0 ] EXE_CMD_Sig, EXECMD;
+
+
+assign clk = CLOCK_50;
+assign rst = SW[0];
 
 IF_Stage if_stage (
 	.clk 				(clk),
@@ -341,13 +342,13 @@ IF_Stage_reg if_stage_reg (
 	.PC 				(PCf),
 	.Instruction 		(instruction_out)
 );
-ID_Stage IDStage (
+ID_Stage id_stage (
 	.clk 				(clk),
 	.rst 				(rst),
 	.Instruction 		(instruction_out),
 	.WB_Data 			(Result_WB_Value),
 	.WB_Dest 			(Dest_WB),
-	.WB_Write_Enable	(WB_EN),
+	.WB_Write_Enable 	(WB_en_output),
 	.Val1 				(val1_ID), 
 	.Val2 				(val2_ID),
 	.Reg2 				(Reg2_ID), 
@@ -360,7 +361,7 @@ ID_Stage IDStage (
 	.WB_EN 				(WB_EN_ID)
 );
 	
-ID_Stage_reg IDStagereg	(
+ID_Stage_reg id_stage_reg	(
 	.clk 				(clk),
 	.rst 				(rst),
 	.flush 				(Br_taken_IF),
@@ -386,7 +387,7 @@ ID_Stage_reg IDStagereg	(
 	.WB_EN 				(WB_EN_EXE)
 );
 	
-EXE_Stage EXEStage (
+EXE_Stage exe_stage (
     .clk 				(clk),
 	.EXE_CMD 			(EXECMD),
 	.val1 				(val1),
@@ -397,9 +398,9 @@ EXE_Stage EXEStage (
 	.ALU_result 		(ALU_result_toReg),
 	.Br_Addr 			(BrAddress_EXE),
 	.Br_taken 			(Br_taken_IF)
-);	
+);
 	
- EXE_Stage_reg EXEStagereg1 (
+ EXE_Stage_reg exe_stage_reg (
 	.clk 				(clk),
 	.rst 				(rst),
 	.WB_en_in 			(WB_EN_EXE),
@@ -416,7 +417,7 @@ EXE_Stage EXEStage (
 	.Dest 				(Dest_out)
 );
 	
-MEM_Stage MEMstage (
+MEM_Stage mem_stage (
 	.clk 				(clk),
 	.MEM_R_EN_in 		(MEM_R_EN_MEM),
 	.MEM_W_EN_in 		(MEM_W_EN_MEM),
@@ -424,21 +425,21 @@ MEM_Stage MEMstage (
 	.ST_val 			(ST_Val),
 	.MEM_read_value 	(Data)
 );
-MEM_Stage_reg MEMStagereg (
+MEM_Stage_reg mem_stage_reg (
 	.clk 				(clk),
 	.rst 				(rst),
 	.WB_en_in 			(WB_EN_MEM),
 	.MEM_R_EN_in 		(MEM_R_EN_MEM),
 	.ALU_result_in 		(ALU_res_MEM),
-	.Mem_read_value_in	(Data),
+	.Mem_read_value_in 	(Data),
 	.Dest_in 			(Dest_out),
-	.WB_en 				(WB_EN),
+	.WB_en 				(WB_EN_input),
 	.MEM_R_EN 			(MEM_R_EN_WB),
 	.ALU_result 		(ALU_Result_WBin),
 	.Mem_read_value 	(memreadval),
 	.Dest 				(WBdestAddress)
 );
-WB_Stage WBst (
+WB_Stage wb_stage (
 	.clk 				(clk),
 	.WB_en_in 			(WB_EN_input),
 	.MEM_R_EN 			(MEM_R_EN_WB),
@@ -449,7 +450,7 @@ WB_Stage WBst (
     .Write_value		(Result_WB_Value),
     .Dest 				(Dest_WB)
 );
-	
+
 
 /*
 sevenseg sevenfetch(PC[3:0], dispfetch);

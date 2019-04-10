@@ -28,13 +28,13 @@ module ID_Stage
 	Registers_File registers_file (
 		.clk 			(clk),
 		.rst 			(rst),
-		.src1			(Instruction[20:16]),
-		.src2 			(Instruction[15:11]),
+		.src1			(Instruction[25:21]),
+		.src2 			(Instruction[20:16]),
 		.dest 			(WB_Dest), 
 		.Write_Val 		(WB_Data), 
 		.Write_EN 		(WB_Write_Enable), 
 		.reg1 			(Val1), 
-		.reg2 			(Val2)
+		.reg2 			(Reg2)
 	);
 	Sign_Extend sign_extend (
 		.in 			(Instruction[15:0]), 
@@ -42,7 +42,7 @@ module ID_Stage
 	);
 	MUX2TO1 mux_reg2 (
 		.a 				(signed_out), 
-		.b 				(Val2), 
+		.b 				(Reg2), 
 		.sel 			(is_Imm), 
 		.res 			(Val2)
 	);

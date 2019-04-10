@@ -11,10 +11,7 @@ module Data_Memory
 	reg [31:0] memory [255:0]; 
 	initial
 	begin
-  		memory[32'd100] = 32'd255;
-  		memory[32'd101] = 32'd0;
-  		memory[32'd102] = 32'd1;
-  		memory[32'd103] = 32'd0;
+  		//memory[32'd100] = 32'd255;
 	end
 	always @(posedge clk)
 	begin

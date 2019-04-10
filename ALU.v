@@ -8,7 +8,7 @@ module ALU
 
   reg [31:0]Y, var, x, g;
   
-always @(in1, in2, cmd)begin
+always @(in1 or in2 or cmd)begin
   case (cmd)
     4'b0000:  Y = in1 + in2;
     4'b0010:  Y = in1 - in2;
@@ -28,6 +28,8 @@ always @(in1, in2, cmd)begin
     Y = {g , x};      
   end       
 end
+
+assign result = Y;
 
 endmodule
 
