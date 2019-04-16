@@ -4,6 +4,7 @@ module Address_Mapping
 		output [31:0] Data_memory_address
 	);
 
-	assign Data_memory_address = ALU_result<<2 + 32'd1024;
+	// assign Data_memory_address = ALU_result<<2 + 32'd1024;
+	assign Data_memory_address = (ALU_result - 32'd1024)>>2;
 
 endmodule

@@ -60,7 +60,7 @@ ID_Stage_reg id_stage_reg	(
 	.Br_type_in			(Br_type_ID),
 	.EXE_CMD_in 		(EXE_CMD_Sig),
 	.MEM_R_EN_in 		(MEM_R_EN_ID),
-	.MEM_W_EN_in 		(MEM_R_EN_ID),
+	.MEM_W_EN_in 		(MEM_W_EN_ID),
     .WB_EN_in 			(WB_EN_ID),
     .Dest 				(Dest_MEM),
 	.Reg2 				(Reg2),
@@ -92,7 +92,7 @@ EXE_Stage exe_stage (
 	.rst 				(rst),
 	.WB_en_in 			(WB_EN_EXE),
 	.MEM_R_EN_in 		(MEM_R_EN_EXE),
-	.MEM_W_EN_in 		(MEM_R_EN_EXE),
+	.MEM_W_EN_in 		(MEM_W_EN_EXE),
 	.ALU_result_in 		(ALU_result_toReg),
 	.ST_val_in 			(Reg2),
 	.Dest_in 			(Dest_MEM),
@@ -143,7 +143,7 @@ WB_Stage wb_stage (
 
 initial begin
   clk = 0;
-  repeat(1000) #20
+  repeat(100000) #20
     clk = ~clk;
   end
 initial begin

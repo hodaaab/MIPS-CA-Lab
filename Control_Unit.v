@@ -138,8 +138,8 @@ module Control_Unit
 			begin
 			mem_read = 1'b1;
 			mem_write = 1'b0;
-			wb_enable = 1'b0;
-			is_immediate = 1'b0;
+			wb_enable = 1'b1;
+			is_immediate = 1'b1;
 			branch = 2'b0;
 			alu_command = 4'b0000;
 			end
@@ -148,7 +148,7 @@ module Control_Unit
 			mem_read = 1'b0;
 			mem_write = 1'b1;
 			wb_enable = 1'b0;
-			is_immediate = 1'b0;
+			is_immediate = 1'b1;
 			branch = 2'b0;
 			alu_command = 4'b0000;
 			end
@@ -157,7 +157,7 @@ module Control_Unit
 			mem_read = 1'b0;
 			mem_write = 1'b0;
 			wb_enable = 1'b0;
-			is_immediate = 1'b0;
+			is_immediate = 1'b1;
 			branch = 2'b01;
 			alu_command = 4'bx;
 			end
@@ -166,7 +166,7 @@ module Control_Unit
 			mem_read = 1'b0;
 			mem_write = 1'b0;
 			wb_enable = 1'b0;
-			is_immediate = 1'b0;
+			is_immediate = 1'b1;
 			branch = 2'b10;
 			alu_command = 4'bx;
 			end
@@ -175,7 +175,7 @@ module Control_Unit
 			mem_read = 1'b0;
 			mem_write = 1'b0;
 			wb_enable = 1'b0;
-			is_immediate = 1'b0;
+			is_immediate = 1'b1;
 			branch = 2'b11;
 			alu_command = 4'bx;
 			end

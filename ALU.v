@@ -15,18 +15,18 @@ always @(in1 or in2 or cmd)begin
     4'b0110:  Y = ~ (in1 | in2);
     4'b0100:  Y = in1 & in2;
     4'b0101:  Y = in1 | in2;
-    4'b0110:  Y = ~ (in1 | in2);
     4'b0111:  Y = in1 ^ in2;
     4'b1000:  Y = in1 << in2;
-    4'b1010:  Y = in1 >> in2;
+    4'b1010:  Y = $signed(in1) >>> in2;
+    4'b1001:  Y = in1 >> in2;
   endcase 
    
-  if (cmd == 4'b1001) begin 
-    var = {32{in1[31]}};    
-    x = in1 >> in2;   
-    g = var << 31 - in2;
-    Y = {g , x};      
-  end       
+  // if (cmd == 4'b1001) begin 
+  //   var = {32{in1[31]}};    
+  //   x = in1 >> in2;   
+  //   g = var << 31 - in2;
+  //   Y = {g , x};      
+  // end       
 end
 
 assign result = Y;

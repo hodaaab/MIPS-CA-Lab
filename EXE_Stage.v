@@ -13,7 +13,8 @@ module EXE_Stage
 		output Br_taken
 	);
 	always @(PC or val2) begin
-		Br_Addr <= PC + 32'd4 + val2[15:0]; //PC + offset + 4
+		// Br_Addr <= PC + 32'd4 + val2[15:0]; //PC + offset + 4
+		Br_Addr <= PC + {val2[29:0], 2'd0};
 	end
 	Condition_Check condition_check (
 		.Br_type 			(Br_type), 
