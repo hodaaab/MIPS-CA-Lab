@@ -28,7 +28,8 @@ module ID_Stage_reg
 		output reg WB_EN
 	);
 
-	always@(posedge clk or posedge rst or posedge flush)
+	// always@(posedge clk or posedge rst or posedge flush)
+	always@(posedge clk or posedge rst)
 	begin
 		if(rst || flush)
 		begin

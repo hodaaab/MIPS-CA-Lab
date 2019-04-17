@@ -7,13 +7,13 @@ module Condition_Check
 	);
 
 	always @(*) begin
-		Branch_Taken <= 0;
+		// Branch_Taken <= 0;
 		if (Br_type == 2'b01) begin //BEZ
 			if(Val1 == 32'b0)
 				Branch_Taken <= 1;
 		end
 		else if (Br_type == 2'b10) begin //BNE
-			if(Val1 == Src2_Val)
+			if(Val1 != Src2_Val)
 				Branch_Taken <= 1;
 		end
 		else if (Br_type == 2'b11) begin

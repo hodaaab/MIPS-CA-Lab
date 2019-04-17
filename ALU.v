@@ -6,7 +6,7 @@ module ALU
     output [31:0] result
   );
 
-  reg [31:0]Y, var, x, g;
+  reg [31:0] Y, var, x, g;
   
 always @(in1 or in2 or cmd)begin
   case (cmd)

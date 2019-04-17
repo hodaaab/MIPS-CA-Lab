@@ -17,7 +17,7 @@ IF_Stage if_stage (
 	.rst 				(rst),
 	.PC 				(PC),
 	.Br_taken 			(Br_taken_IF),
-	.Br_Addr 			(BrAddress),
+	.Br_Addr 			(BrAddress_EXE),
 	.Instruction 		(instruction)
 );
 IF_Stage_reg if_stage_reg (

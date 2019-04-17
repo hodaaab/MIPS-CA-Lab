@@ -23,7 +23,7 @@ wire [31:0] PC_in;
 		.res 			(PC_in)
 	);
 	Instruction_Memory inst_mem (
-		.Address 		(PC),
+		.Address 		(PC_in),
 		.Instruction 	(Instruction)
 	);
 endmodule
