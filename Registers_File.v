@@ -13,9 +13,9 @@ module Registers_File
 
     reg [31:0] Reg [0:31];
     integer i;
- //   initial begin
-   //   $readmemb("Regfile.txt", Reg);
-   // end 
+    //initial begin
+    //  $readmemb("Regfile.txt", Reg);
+    //end 
     always @(negedge clk or posedge rst) begin
         if (rst) begin
             for (i = 0; i < 32; i = i + 1)

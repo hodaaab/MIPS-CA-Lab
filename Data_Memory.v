@@ -8,7 +8,7 @@ module Data_Memory
 		output [31:0] Data
 	);
 
-	reg [31:0] memory [255:0]; 
+	reg [31:0] memory [63:0]; 
 	initial
 	begin
   		//memory[32'd100] = 32'd255;
@@ -18,6 +18,6 @@ module Data_Memory
   		if(MEM_W_EN)
   			memory[Address] <= Write_data;
 	end
-	assign Data = (MEM_R_EN)? memory[Address] : 32'b0;
+	assign Data = (MEM_R_EN) && (Address < 32'd64) ? memory[Address] : 32'b0;
 
 endmodule
