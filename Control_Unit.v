@@ -6,8 +6,7 @@ module Control_Unit
 		output reg mem_write, 
 		output reg wb_enable, 
 		output reg is_immediate, 
-		output reg [1:0] branch,
-		output reg is_single_source
+		output reg [1:0] branch
 	);
 	always@(*)
 	begin
@@ -17,7 +16,6 @@ module Control_Unit
 		is_immediate = 1'b0;
 		branch = 2'b0;
 		alu_command = 4'b0;
-		is_single_source = 1'b0;
 	case(opcode)
 		6'd0 :
 			begin
@@ -27,7 +25,6 @@ module Control_Unit
 			is_immediate = 1'b0;
 			branch = 2'b0;
 			alu_command = 4'bx;
-			is_single_source = 1'b0;
 			end
 		6'd1 :
 			begin
@@ -37,7 +34,6 @@ module Control_Unit
 			is_immediate = 1'b0;
 			branch = 2'b0;
 			alu_command = 4'b0;
-			is_single_source = 1'b0;
 			end
 		6'd3 :
 			begin
@@ -47,7 +43,6 @@ module Control_Unit
 			is_immediate = 1'b0;
 			branch = 2'b0;
 			alu_command = 4'b0010;
-			is_single_source = 1'b0;
 			end
 		6'd5 :
 			begin
@@ -57,7 +52,6 @@ module Control_Unit
 			is_immediate = 1'b0;
 			branch = 2'b0;
 			alu_command = 4'b0100;
-			is_single_source = 1'b0;
 			end
 		6'd6 :
 			begin
@@ -67,7 +61,6 @@ module Control_Unit
 			is_immediate = 1'b0;
 			branch = 2'b0;
 			alu_command = 4'b0101;
-			is_single_source = 1'b0;
 			end
 		6'd7 :
 			begin
@@ -77,7 +70,6 @@ module Control_Unit
 			is_immediate = 1'b0;
 			branch = 2'b0;
 			alu_command = 4'b0110;
-			is_single_source = 1'b0;
 			end
 		6'd8 :
 			begin
@@ -87,7 +79,6 @@ module Control_Unit
 			is_immediate = 1'b0;
 			branch = 2'b0;
 			alu_command = 4'b0111;
-			is_single_source = 1'b0;
 			end
 		6'd9 :
 			begin
@@ -97,7 +88,6 @@ module Control_Unit
 			is_immediate = 1'b0;
 			branch = 2'b0;
 			alu_command = 4'b1000;
-			is_single_source = 1'b0;
 			end
 		6'd10 :
 			begin
@@ -107,7 +97,6 @@ module Control_Unit
 			is_immediate = 1'b0;
 			branch = 2'b0;
 			alu_command = 4'b1000;
-			is_single_source = 1'b0;
 			end
 		6'd11 :
 			begin
@@ -117,7 +106,6 @@ module Control_Unit
 			is_immediate = 1'b0;
 			branch = 2'b0;
 			alu_command = 4'b1001;
-			is_single_source = 1'b0;
 			end
 		6'd12 :
 			begin
@@ -136,7 +124,6 @@ module Control_Unit
 			is_immediate = 1'b1;
 			branch = 2'b0;
 			alu_command = 4'b0;
-			is_single_source = 1'b1;
 			end
 		6'd33 :
 			begin
@@ -146,7 +133,6 @@ module Control_Unit
 			is_immediate = 1'b1;
 			branch = 2'b0;
 			alu_command = 4'b0010;
-			is_single_source = 1'b1;
 			end
 		6'd36 :
 			begin
@@ -156,7 +142,6 @@ module Control_Unit
 			is_immediate = 1'b1;
 			branch = 2'b0;
 			alu_command = 4'b0000;
-			is_single_source = 1'b1;
 			end
 		6'd37 :
 			begin
@@ -166,7 +151,6 @@ module Control_Unit
 			is_immediate = 1'b1;
 			branch = 2'b0;
 			alu_command = 4'b0000;
-			is_single_source = 1'b0;
 			end
 		6'd40 :
 			begin
@@ -176,7 +160,6 @@ module Control_Unit
 			is_immediate = 1'b1;
 			branch = 2'b01;
 			alu_command = 4'bx;
-			is_single_source = 1'b1;
 			end
 		6'd41 :
 			begin
@@ -186,7 +169,6 @@ module Control_Unit
 			is_immediate = 1'b1;
 			branch = 2'b10;
 			alu_command = 4'bx;
-			is_single_source = 1'b0;
 			end
 		6'd42 :
 			begin
@@ -196,7 +178,6 @@ module Control_Unit
 			is_immediate = 1'b1;
 			branch = 2'b11;
 			alu_command = 4'bx;
-			is_single_source = 1'b1;
 			end
 	endcase
 end
