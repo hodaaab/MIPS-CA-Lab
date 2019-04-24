@@ -18,5 +18,6 @@ module Data_Memory
   		if(MEM_W_EN)
   			memory[Address] <= Write_data;
 	end
-	assign Data = (MEM_R_EN) && (Address < 32'd63) ? memory[Address] : 32'd0;
+	assign Data = (MEM_R_EN) && (Address < 32'd64) ? memory[Address] : 32'b0;
+
 endmodule

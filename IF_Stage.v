@@ -3,17 +3,18 @@ module IF_Stage
 		input clk, 
 		input rst,
 		input Br_taken,
+		input freeze,
 		input [31:0] Br_Addr,
 		output reg[31:0] PC,
 		output [31:0] Instruction
 	);
 	
-	wire [31:0] PC_in;
+wire [31:0] PC_in;
 	always @(posedge clk or posedge rst)
 	begin
 		if(rst)
 			PC <= 32'b0;
-		else
+		else if(!freeze)
 			PC <= PC_in + 32'd4;
 	end
 	MUX2TO1 pc_mux (

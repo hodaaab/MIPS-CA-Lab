@@ -311,37 +311,42 @@ assign HEX4 = dispwb;
 assign LEDR[3:0] = instruction[24:21];
 */
 
+wire clk, rst;
+assign clk = CLOCK_50;
+assign rst = SW[0];
 
 wire [31:0] PC, BrAddress, instruction, PCf, instruction_out, Result_WB_Value, val1_ID, val2_ID, Reg2_ID, Reg2, val1, val2, PC_ID_OUT;
 wire [31:0] ALU_res_MEM, ALU_result_toReg, BrAddress_EXE, ST_Val, Data, ALU_Result_WBin, memreadval;
  
 wire MEM_W_EN_EXE, MEM_R_EN_EXE, WB_EN_EXE, WB_EN_MEM, MEM_R_EN_MEM, MEM_W_EN_MEM, MEM_R_EN_WB;
-wire Br_Taken, Br_taken_IF, WB_EN, WB_en_output, WB_EN_input, Br_taken, MEM_R_EN_ID, MEM_W_EN_ID, WB_EN_ID;
+wire Br_taken_IF, WB_EN, WB_en_output, WB_EN_input, Br_taken, MEM_R_EN_ID, MEM_W_EN_ID, WB_EN_ID;
 wire [4:0] Dest_WB, Dest_ID, Dest_MEM, Dest_out, WBdestAddress;
 wire [1:0] Br_type_ID, Br_type;
 wire [3:0 ] EXE_CMD_Sig, EXECMD;
+wire freeze;
 
-wire clk, rst;
-assign clk = CLOCK_50;
-assign rst = SW[0];
 
 IF_Stage if_stage (
 	.clk 				(clk),
 	.rst 				(rst),
 	.PC 				(PC),
+	.freeze				(freeze),
 	.Br_taken 			(Br_taken_IF),
 	.Br_Addr 			(BrAddress_EXE),
 	.Instruction 		(instruction)
 );
+
 IF_Stage_reg if_stage_reg (
 	.clk 				(clk),
 	.rst 				(rst),
 	.PC_in 				(PC),
+	.freeze				(freeze),
 	.Instruction_in 	(instruction),
 	.flush 				(Br_taken_IF),
 	.PC 				(PCf),
 	.Instruction 		(instruction_out)
 );
+
 ID_Stage id_stage (
 	.clk 				(clk),
 	.rst 				(rst),
@@ -349,16 +354,21 @@ ID_Stage id_stage (
 	.WB_Data 			(Result_WB_Value),
 	.WB_Dest 			(Dest_WB),
 	.WB_Write_Enable 	(WB_en_output),
+	.EXE_Dest			(Dest_MEM),
+	.Exe_WB_EN			(WB_EN_EXE),
+	.MEM_Dest			(Dest_out),
+	.MEM_WB_EN			(WB_EN_MEM),
 	.Val1 				(val1_ID), 
 	.Val2 				(val2_ID),
 	.Reg2 				(Reg2_ID), 
 	.Dest 				(Dest_ID), 
-	.Branch_Type 		(Br_type_ID), //why
-	.Br_Taken 			(Br_taken), 
+	.Branch_Type 		(Br_type_ID),
+	.Br_Taken 			(Br_taken), //why? not needed
 	.EXE_CMD 			(EXE_CMD_Sig),
 	.MEM_R_EN 			(MEM_R_EN_ID),
 	.MEM_W_EN 			(MEM_W_EN_ID),
-	.WB_EN 				(WB_EN_ID)
+	.WB_EN 				(WB_EN_ID),
+	.Hazard_Detected_Signal(freeze)
 );
 	
 ID_Stage_reg id_stage_reg	(
@@ -425,6 +435,7 @@ MEM_Stage mem_stage (
 	.ST_val 			(ST_Val),
 	.MEM_read_value 	(Data)
 );
+
 MEM_Stage_reg mem_stage_reg (
 	.clk 				(clk),
 	.rst 				(rst),
@@ -439,6 +450,7 @@ MEM_Stage_reg mem_stage_reg (
 	.Mem_read_value 	(memreadval),
 	.Dest 				(WBdestAddress)
 );
+
 WB_Stage wb_stage (
 	.clk 				(clk),
 	.WB_en_in 			(WB_EN_input),
@@ -450,6 +462,7 @@ WB_Stage wb_stage (
     .Write_value		(Result_WB_Value),
     .Dest 				(Dest_WB)
 );
+
 
 
 /*

@@ -4,9 +4,5 @@ module MUX2TO1
 		input sel,
 		output [31:0] res
 	);
-assign res = sel ? a : b ;
+	assign res = sel ? a : b ;
 endmodule
-
-
-
-
