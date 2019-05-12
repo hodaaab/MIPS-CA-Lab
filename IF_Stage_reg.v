@@ -17,10 +17,10 @@ module IF_Stage_reg
 			PC <= 32'b0;
 			Instruction <= 32'b0;
 		end
-		else if(flush)
-		begin
-			Instruction <= 32'b0;
-		end
+		else if (flush )
+		  begin
+		    Instruction <=32'b0 ;
+		    end
 		else if(!freeze) 
 		begin
 			Instruction <= Instruction_in;

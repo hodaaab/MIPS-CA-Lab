@@ -1,5 +1,7 @@
 module ID_Stage
 	(
+		input is_forward ,
+	  	input MEM_R_EN_regout,
 		input clk, 
 		input rst,
 		//From IF
@@ -11,10 +13,12 @@ module ID_Stage
 		//to IF stage registers
 		//output IF_Flush,
 		//from EXE for hazard detect
+   // input MEM_R_EN_regout,
 		input [4:0] EXE_Dest,
 		input Exe_WB_EN,
 		//from MEM for hazard detect
 		input [4:0] MEM_Dest,
+		input haz_MEM_RD_EN,
 		input MEM_WB_EN,
 		//to stage registers
 		output [31:0]Val1, Val2, Reg2, 
@@ -27,7 +31,10 @@ module ID_Stage
 		output  MEM_W_EN,
 		//Write Back Enable
 		output  WB_EN,
-		output Hazard_Detected_Signal
+		output Hazard_Detected_Signal,
+		output [4:0] src1 ,
+		output [4:0] src2  
+		
 	);
 	
 	wire [31:0] signed_out;
@@ -35,65 +42,77 @@ module ID_Stage
 	wire [3:0] EXE_CMD_ctrl;
 	wire [1:0] Branch_Type_ctrl;
 	wire is_Imm, single_src;
+	wire  is_branch_jump_CTRL ;
 
 	Registers_File registers_file (
-		.clk 			(clk),
-		.rst 			(rst),
-		.src1			(Instruction[25:21]),
-		.src2 			(Instruction[20:16]),
-		.dest 			(WB_Dest), 
-		.Write_Val 		(WB_Data), 
-		.Write_EN 		(WB_Write_Enable), 
-		.reg1 			(Val1), 
-		.reg2 			(Reg2)
+		.clk 				(clk),
+		.rst 				(rst),
+		.src1				(Instruction[25:21]),
+		.src2 				(Instruction[20:16]),
+		.dest 				(WB_Dest), 
+		.Write_Val 			(WB_Data), 
+		.Write_EN 			(WB_Write_Enable), 
+		.reg1 				(Val1), 
+		.reg2 				(Reg2)
 	);
 	Sign_Extend sign_extend (
-		.in 			(Instruction[15:0]), 
-		.out 			(signed_out)
+		.in 				(Instruction[15:0]), 
+		.out 				(signed_out)
 	);
 	MUX2TO1 mux_reg2 (
-		.a 				(signed_out), 
-		.b 				(Reg2), 
-		.sel 			(is_Imm), 
-		.res 			(Val2)
+		.a 					(signed_out), 
+		.b 					(Reg2), 
+		.sel 				(is_Imm), 
+		.res 				(Val2)
 	);
 	MUX5 mux_dest (
-		.a 				(Instruction[20:16]), 
-		.b 				(Instruction[15:11]), 
-		.sel 			(is_Imm), 
-		.res 			(Dest)
+		.a 					(Instruction[20:16]), 
+		.b 					(Instruction[15:11]), 
+		.sel 				(is_Imm), 
+		.res 				(Dest)
 	);
 	Hazard_Detection_Unit hazard_detection (
-		.single_source 	(single_src),
-		.src1 			(Instruction[25:21]),
-		.src2 			(Instruction[20:16]),
-	 	.Exe_Dest		(EXE_Dest),
-		.Exe_WB_EN 		(Exe_WB_EN),
-		.Mem_Dest		(MEM_Dest),
-		.Mem_WB_EN 		(MEM_WB_EN),
-		.Hazard_Detected(Hazard_Detected_Signal)
+		.is_forward 		(is_forward),
+		.single_source 		(single_src),
+		.src1 				(Instruction[25:21]),
+		.src2 				(Instruction[20:16]),
+	 	.Exe_Dest			(EXE_Dest),
+		.Exe_WB_EN 			(Exe_WB_EN),
+		.Mem_Dest			(MEM_Dest),
+		.Mem_WB_EN 			(MEM_WB_EN),
+		.is_immediate   	(is_Imm_ctrl),
+		.is_branch_jump 	(is_branch_jump_CTRL),
+		.Exe_RD_EN 			(MEM_R_EN_regout),
+		.Mem_RD_EN			(MEM_RD_EN),
+		.ID_RD_EN			(MEM_R_EN_ctrl),
+		.Hazard_Detected 	(Hazard_Detected_Signal)
 	);
 	MUX5 hazard_mux1 (
-		.a 				(5'b0),
-		.b 				({MEM_R_EN_ctrl, MEM_W_EN_ctrl, WB_EN_ctrl, Branch_Type_ctrl}),
-		.sel 			(Hazard_Detected_Signal),
-		.res 			({MEM_R_EN, MEM_W_EN, WB_EN, Branch_Type})
+		.a 					(5'b0),
+		.b 					({MEM_R_EN_ctrl, MEM_W_EN_ctrl, WB_EN_ctrl, Branch_Type_ctrl}),
+		.sel 				(Hazard_Detected_Signal),
+		.res 				({MEM_R_EN, MEM_W_EN, WB_EN, Branch_Type})
 	);
 	MUX5 hazard_mux2 (
-		.a 				(5'b0),
-		.b 				({EXE_CMD_ctrl, is_Imm_ctrl}),
-		.sel 			(Hazard_Detected_Signal),
-		.res 			({EXE_CMD, is_Imm})
+		.a 					(5'b0),
+		.b 					({EXE_CMD_ctrl, is_Imm_ctrl}),
+		.sel 				(Hazard_Detected_Signal),
+		.res 				({EXE_CMD, is_Imm})
 	);
 	Control_Unit controller (
-		.opcode 		(Instruction[31:26]), 
-		.alu_command 	(EXE_CMD_ctrl), 
-		.mem_read 		(MEM_R_EN_ctrl), 
-		.mem_write 		(MEM_W_EN_ctrl), 
-		.wb_enable 		(WB_EN_ctrl), 
-		.is_immediate 	(is_Imm_ctrl), 
-		.branch 		(Branch_Type_ctrl),
-		.is_single_source(single_src)
+		.opcode 			(Instruction[31:26]), 
+		.alu_command 		(EXE_CMD_ctrl), 
+		.mem_read 			(MEM_R_EN_ctrl), 
+		.mem_write 			(MEM_W_EN_ctrl), 
+		.wb_enable 			(WB_EN_ctrl), 
+		.is_immediate 		(is_Imm_ctrl), 
+		.branch 			(Branch_Type_ctrl),
+		.is_single_source	(single_src),
+		.is_branch_jump 	(is_branch_jump_CTRL)
 	);
+	
+
 	assign Br_Taken = (Instruction[31:29] == 3'b101)? 1'b1 : 1'b0;
+	assign src1 = Instruction[25:21];
+  	assign src2 = Instruction[20:16];
 endmodule

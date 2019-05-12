@@ -5,6 +5,8 @@ module ID_Stage_reg
 		//from EXE Stage
 		input flush,
 		//to stage registers
+		input [4:0] src1_in ,
+		input [4:0] src2_in ,
 		input [4:0] Dest_in,
 		input [31:0] Reg2_in,
 		input [31:0] Val2_in,
@@ -25,13 +27,15 @@ module ID_Stage_reg
 		output reg [3:0] EXE_CMD,
 		output reg MEM_R_EN,
 		output reg MEM_W_EN,
-		output reg WB_EN
+		output reg WB_EN ,
+		output reg [4:0] src1_out ,
+		output reg [4:0] src2_out 
 	);
 
-	// always@(posedge clk or posedge rst or posedge flush)
+//   always@(posedge clk or posedge rst or posedge flush)
 	always@(posedge clk or posedge rst)
 	begin
-		if(rst)
+		if(rst )
 		begin
 			EXE_CMD <= 0;
 			MEM_R_EN <= 0;
@@ -43,10 +47,11 @@ module ID_Stage_reg
 			Val1 <= 0;
 			Val2 <= 0;
 			Reg2 <= 0;
-		end
-		else if (flush)
-		begin
-			EXE_CMD <= 0;
+			src1_out <= 5'b0 ;
+			src2_out <= 5'b0 ;
+		end 
+		else if (flush) begin
+		  EXE_CMD <= 0;
 			MEM_R_EN <= 0;
 			MEM_W_EN <= 0;
 			WB_EN <= 0; 
@@ -56,7 +61,11 @@ module ID_Stage_reg
 			Val1 <= 0;
 			Val2 <= 0;
 			Reg2 <= 0;
-		end
+			src1_out <= 5'b0 ;
+			src2_out <= 5'b0 ;
+		  
+		  end
+		
 		else begin
 			EXE_CMD <= EXE_CMD_in;
 			MEM_R_EN <= MEM_R_EN_in;
@@ -68,6 +77,8 @@ module ID_Stage_reg
 			Val1 <= Val1_in;
 			Val2 <= Val2_in;
 			Reg2 <= Reg2_in;
+			src1_out <= src1_in ;
+			src2_out <= src2_in ;
 		end
 	end
 endmodule
