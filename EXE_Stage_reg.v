@@ -11,6 +11,8 @@ module EXE_Stage_reg
 		input [31:0] ST_val_in,
 		input [4:0] Dest_in,
 
+		input freeze,
+
 		output reg WB_en,
 		//MEM Signals
 		output reg MEM_R_EN,
@@ -31,7 +33,7 @@ module EXE_Stage_reg
 			ST_Val <= 0;
 			Dest <= 0;
 		end
-		else begin
+		else if(!freeze) begin
 			WB_en <= WB_en_in;
 			MEM_R_EN <= MEM_R_EN_in;
 			MEM_W_EN <= MEM_W_EN_in;

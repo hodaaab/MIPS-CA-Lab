@@ -17,6 +17,9 @@ module ID_Stage_reg
 		input MEM_R_EN_in,
 		input MEM_W_EN_in,
 		input WB_EN_in,
+
+		input freeze,
+
 		//to stage registers
 		output reg [4:0] Dest,
 		output reg [31:0] Reg2,
@@ -66,7 +69,7 @@ module ID_Stage_reg
 		  
 		  end
 		
-		else begin
+		else if(!freeze) begin
 			EXE_CMD <= EXE_CMD_in;
 			MEM_R_EN <= MEM_R_EN_in;
 			MEM_W_EN <= MEM_W_EN_in;

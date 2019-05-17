@@ -3,8 +3,11 @@ module IF_Stage
 		input clk, 
 		input rst,
 		input Br_taken,
-		input freeze,
+		input hazard_freeze,
 		input [31:0] Br_Addr,
+
+		input freeze,
+
 		output reg[31:0] PC,
 		output [31:0] Instruction
 	);
@@ -14,7 +17,9 @@ wire [31:0] PC_in;
 	begin
 		if(rst)
 			PC <= 32'b0;
-		else if(!freeze)
+		else if(freeze || hazard_freeze)
+			PC <= PC_in;
+		else
 			PC <= PC_in + 32'd4;
 	end
 	MUX2TO1 pc_mux (

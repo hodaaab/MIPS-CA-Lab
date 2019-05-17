@@ -1,7 +1,5 @@
 module ID_Stage
 	(
-		input is_forward ,
-	  	input MEM_R_EN_regout,
 		input clk, 
 		input rst,
 		//From IF
@@ -10,16 +8,15 @@ module ID_Stage
 		input [31:0] WB_Data,
 		input [4:0] WB_Dest,
 		input WB_Write_Enable,
-		//to IF stage registers
-		//output IF_Flush,
-		//from EXE for hazard detect
-   // input MEM_R_EN_regout,
+		//From EXE Stage for hazard detect
 		input [4:0] EXE_Dest,
 		input Exe_WB_EN,
 		//from MEM for hazard detect
 		input [4:0] MEM_Dest,
-		input haz_MEM_RD_EN,
 		input MEM_WB_EN,
+		//for forwarding hazard detect
+		input is_forward,
+		input MEM_R_EN_regout,
 		//to stage registers
 		output [31:0]Val1, Val2, Reg2, 
 		output [4:0] Dest, 
@@ -31,8 +28,9 @@ module ID_Stage
 		output  MEM_W_EN,
 		//Write Back Enable
 		output  WB_EN,
+		//these outputs
 		output Hazard_Detected_Signal,
-		output [4:0] src1 ,
+		output [4:0] src1,
 		output [4:0] src2  
 		
 	);
@@ -42,7 +40,6 @@ module ID_Stage
 	wire [3:0] EXE_CMD_ctrl;
 	wire [1:0] Branch_Type_ctrl;
 	wire is_Imm, single_src;
-	wire  is_branch_jump_CTRL ;
 
 	Registers_File registers_file (
 		.clk 				(clk),
@@ -80,11 +77,7 @@ module ID_Stage
 		.Exe_WB_EN 			(Exe_WB_EN),
 		.Mem_Dest			(MEM_Dest),
 		.Mem_WB_EN 			(MEM_WB_EN),
-		.is_immediate   	(is_Imm_ctrl),
-		.is_branch_jump 	(is_branch_jump_CTRL),
 		.Exe_RD_EN 			(MEM_R_EN_regout),
-		.Mem_RD_EN			(MEM_RD_EN),
-		.ID_RD_EN			(MEM_R_EN_ctrl),
 		.Hazard_Detected 	(Hazard_Detected_Signal)
 	);
 	MUX5 hazard_mux1 (
@@ -107,8 +100,7 @@ module ID_Stage
 		.wb_enable 			(WB_EN_ctrl), 
 		.is_immediate 		(is_Imm_ctrl), 
 		.branch 			(Branch_Type_ctrl),
-		.is_single_source	(single_src),
-		.is_branch_jump 	(is_branch_jump_CTRL)
+		.is_single_source	(single_src)
 	);
 	
 
